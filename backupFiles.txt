@@ -1,2 +1,2 @@
-D:\WorkingFolder\Folder1
-D:\WorkingFolder\Folder2
+D:\WorkingFolder\Folder1,Folder1
+D:\WorkingFolder\Folder2,Folder2
