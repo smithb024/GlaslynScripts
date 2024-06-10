@@ -17,6 +17,7 @@ def OpenFile(filename):
     return contents
 
 FOLDERS_INDEXFILE = "backupFiles.txt"
+DESTINATION_PATH = "D:\\backups"
 
 print('Start backup')
 
@@ -31,12 +32,15 @@ logFile.write("Start backup\n")
 backupLocations = OpenFile(FOLDERS_INDEXFILE)
 
 for backupLocation in backupLocations:
+    compressedFile = f'{DESTINATION_PATH}\\{backupLocation[1]}'
     logFile.write(backupLocation[0])
     logFile.write('\n')
-    shutil.make_archive(backupLocation[1], 'zip', backupLocation[0])
-    logFile.write(f'{backupLocation[1]} Archive Complete\n')
-
-
+    shutil.make_archive(compressedFile, 'zip', backupLocation[0])
+    
+    if os.path.exists(f'{compressedFile}.zip'):
+        logFile.write(f'{backupLocation[1]}: Archive Complete\n')
+    else:
+        logFile.write(f'{backupLocation[1]}: ERROR Failed to archive\n')
 
 # Close the log file
 logFile.close()
