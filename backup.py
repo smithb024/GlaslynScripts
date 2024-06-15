@@ -18,6 +18,7 @@ def OpenFile(filename):
 
 FOLDERS_INDEXFILE = "backupFiles.txt"
 DESTINATION_PATH = "D:\\backups"
+SECONDARY_PATH = "D:\\backups2"
 
 print('Start backup')
 
@@ -29,6 +30,17 @@ logName += '.txt'
 logFile = open(rf"D:\logs\backup\{logName}", "w")
 logFile.write("Start backup\n")
 
+# Save the previous backup
+# Get a list of all the files in the previous backup
+backedUpFiles = os.listdir(DESTINATION_PATH)
+
+# Copy previous back up to the new location
+for fileName in backedUpFiles:
+   shutil.copy(f'{DESTINATION_PATH}\\{fileName}', f'{SECONDARY_PATH}\\{fileName}')
+
+logFile.write("All previous back up files copied\n")
+
+# Begin backing up
 backupLocations = OpenFile(FOLDERS_INDEXFILE)
 
 for backupLocation in backupLocations:
