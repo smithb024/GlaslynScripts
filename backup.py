@@ -2,6 +2,7 @@ import csv
 import datetime
 import os.path
 import shutil
+import sys
 
 # Open the named file and return the contents.
 def OpenFile(filename):
@@ -16,8 +17,23 @@ def OpenFile(filename):
         print(f'Processed {lineCount} lines.')
     return contents
 
-def exitProgram():
-    logFile.write("Fault occurred. Exiting the script")
+# Delete all the files in a folder.
+def DeleteAllFilesInFolder(path):
+    logFile.write(f"Delete all files from {path}\n")
+    try:
+        files = os.listdir(path)
+        for file in files:
+            filePath = os.path.join(path, file)
+            if os.path.isfile(filePath):
+                os.remove(filePath)
+    except:
+        logFile.write("ERROR: issue while deleting files.\n")
+        exitScript()
+    logFile.write("All files deleted successfully.\n")
+
+# exit the script
+def exitScript():
+    logFile.write("Fault occurred. Exiting the script\n")
     logFile.close()
     sys.exit(1)
 
@@ -36,6 +52,11 @@ logFile = open(rf"D:\logs\backup\{logName}", "w")
 logFile.write("Start backup\n\n")
 
 # Save the previous backup
+# Clear some space by emptying the location where the previous backup will go.
+logFile.write("Clear the secondary location\n")
+DeleteAllFilesInFolder(SECONDARY_PATH)
+logFile.write("\n")
+
 # Get a list of all the files in the previous backup
 backedUpFiles = os.listdir(DESTINATION_PATH)
 
@@ -48,9 +69,14 @@ try:
         shutil.copy(f'{DESTINATION_PATH}\\{fileName}', f'{SECONDARY_PATH}\\{fileName}')
 except:
     logFile.write("ERROR: Failed on copy to secondary backup location")
-    exitProgram()
+    exitScript()
 
 logFile.write("All previous back up files copied\n\n")
+
+# Clear the backup location prior to the archive state.
+logFile.write("Clear the backup location\n")
+DeleteAllFilesInFolder(DESTINATION_PATH)
+logFile.write("\n")
 
 # Begin backing up
 logFile.write("Begin archiving folders\n")
@@ -67,10 +93,10 @@ try:
             logFile.write(f'{backupLocation[1]} archive is complete\n')
         else:
             logFile.write(f'{backupLocation[1]}: ERROR Failed to archive\n')
-            exitProgram()
+            exitScript()
 except:
     logFile.write("ERROR: Failed on backup")
-    exitProgram()
+    exitScript()
 
 logFile.write("All folders archived\n\n")
 
