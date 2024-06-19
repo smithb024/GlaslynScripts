@@ -86,7 +86,8 @@ try:
 
     for backupLocation in backupLocations:
         compressedFile = f'{DESTINATION_PATH}\\{backupLocation[1]}'
-        logFile.write(f'Archive {backupLocation[0]}\n')
+        print(f'Archiving {backupLocation[0]}')
+        logFile.write(f'Archiving {backupLocation[0]}\n')
         shutil.make_archive(compressedFile, 'zip', backupLocation[0])
     
         if os.path.exists(f'{compressedFile}.zip'):
