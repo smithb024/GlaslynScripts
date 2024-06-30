@@ -48,7 +48,7 @@ def CalculateSingularValues(fullArray):
     for sorted in sortedArray:
         if sorted != lastValue:
             uniqueValuesArray.append(sorted)
-            logFile.write(f"Add to unique array: {sorted}\n")
+#            logFile.write(f"Add to unique array: {sorted}\n")
         lastValue = sorted
     return uniqueValuesArray
 
@@ -68,6 +68,9 @@ logFile.write(f"Number of returned cells {len(stn)}.\n")
 for stnRow in stn:
     logFile.write(f"stn row count {len(stnRow)}.\n")
     calculatedSingularValuesArray = CalculateSingularValues(stnRow)
+    for singularValue in calculatedSingularValuesArray:
+        count = stnRow.count(singularValue)
+        logFile.write(f"output {singularValue} {count}\n")
 
     logFile.write("\n")
 
