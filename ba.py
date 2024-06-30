@@ -27,16 +27,30 @@ def OpenFile(filename):
             logFile.write(f"Row to analyse: {row}\n")
             for i in range(0, int(numberOfArrays)):
                 index = i + 1
-                logFile.write(f"Indexes interested in: {index * 2}: {index * 2 + 1}\n")
+#                logFile.write(f"Indexes interested in: {index * 2}: {index * 2 + 1}\n")
                 if row[index * 2]:
-                    logFile.write(f"{index} (1) {row[index * 2]}\n")
+#                    logFile.write(f"{index} (1) {row[index * 2]}\n")
                     contents[i].append(row[index * 2])
                 if row[index * 2 + 1]:
-                    logFile.write(f"{index} (2) {row[index * 2 + 1]}\n")
+#                    logFile.write(f"{index} (2) {row[index * 2 + 1]}\n")
                     contents[i].append(row[index * 2 + 1])
             lineCount += 1
         logFile.write(f"Processed {lineCount} lines.\n")
     return contents
+
+# Go through an arrary and return another array containing all the unique values
+def CalculateSingularValues(fullArray):
+    uniqueValuesArray = []
+    sortedArray = fullArray
+    sortedArray.sort()
+    lastValue = ""
+    
+    for sorted in sortedArray:
+        if sorted != lastValue:
+            uniqueValuesArray.append(sorted)
+            logFile.write(f"Add to unique array: {sorted}\n")
+        lastValue = sorted
+    return uniqueValuesArray
 
 print('Start ba')
 
@@ -51,12 +65,14 @@ logFile.write("Start ba\n")
 stn = OpenFile('stn.csv')
 logFile.write(f"Number of returned cells {len(stn)}.\n")
 
-for row in stn:
-    logFile.write(f"stn row count {len(row)}.\n")
+for stnRow in stn:
+    logFile.write(f"stn row count {len(stnRow)}.\n")
+    calculatedSingularValuesArray = CalculateSingularValues(stnRow)
 
-for output in stn[0]:
-    logFile.write(f"output: {output}.\n")
+    logFile.write("\n")
 
 
 # Close the log file
 logFile.close()
+
+print('fin')
