@@ -9,7 +9,6 @@ def OpenFile(filename):
         ignoreLine = True
         lineCount = 0
 
-        
         for row in csvReader:
             if ignoreLine:
                 logFile.write(f"Number of cells {len(row)}.\n")
@@ -64,14 +63,24 @@ logFile.write("Start ba\n")
 
 stn = OpenFile('stn.csv')
 logFile.write(f"Number of returned cells {len(stn)}.\n")
+stnFileNumber = 1
 
+# Loop through each cell in stn
 for stnRow in stn:
     logFile.write(f"stn row count {len(stnRow)}.\n")
+    # Work out the key values
     calculatedSingularValuesArray = CalculateSingularValues(stnRow)
-    for singularValue in calculatedSingularValuesArray:
-        count = stnRow.count(singularValue)
-        logFile.write(f"output {singularValue} {count}\n")
 
+    # Open the output CSV file. 
+    with open(f"Stn{stnFileNumber}.csv", "w") as csvFile:
+        outputStnFile = csv.writer(csvFile)
+
+        # Calculate count and output to the CSV file.
+        for singularValue in calculatedSingularValuesArray:
+            count = stnRow.count(singularValue)
+            outputStnFile.writerow([f"{singularValue}",f"{count}"])
+
+    stnFileNumber += 1
     logFile.write("\n")
 
 
