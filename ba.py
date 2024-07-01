@@ -72,7 +72,7 @@ for stnRow in stn:
     calculatedSingularValuesArray = CalculateSingularValues(stnRow)
 
     # Open the output CSV file. 
-    with open(f"Stn{stnFileNumber}.csv", "w") as csvFile:
+    with open(f"Stn{stnFileNumber}.csv", "w", newline='') as csvFile:
         outputStnFile = csv.writer(csvFile)
 
         # Calculate count and output to the CSV file.
