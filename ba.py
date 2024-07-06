@@ -4,6 +4,7 @@ import datetime
 # Open the named file and return the contents.
 def OpenFile(filename):
     contents = []
+    logFile.write(f"Open file: {filename}\n")
     with open(filename) as csvFile:
         csvReader = csv.reader(csvFile, delimiter=',')
         ignoreLine = True
@@ -61,27 +62,31 @@ logName += '.txt'
 logFile = open(rf"D:\logs\ba\{logName}", "w")
 logFile.write("Start ba\n")
 
-stn = OpenFile('stn.csv')
-logFile.write(f"Number of returned cells {len(stn)}.\n")
-stnFileNumber = 1
+rawFileNames = ['stn', 'trn']
 
-# Loop through each cell in stn
-for stnRow in stn:
-    logFile.write(f"stn row count {len(stnRow)}.\n")
-    # Work out the key values
-    calculatedSingularValuesArray = CalculateSingularValues(stnRow)
+# Loop through each entry in fileNames
+for rawFile in rawFileNames:
+    stn = OpenFile(f'{rawFile}.csv')
+    logFile.write(f"Number of returned cells {len(stn)}.\n")
+    stnFileNumber = 1
 
-    # Open the output CSV file. 
-    with open(f"Stn{stnFileNumber}.csv", "w", newline='') as csvFile:
-        outputStnFile = csv.writer(csvFile)
+    # Loop through each cell in stn
+    for stnRow in stn:
+        logFile.write(f"stn row count {len(stnRow)}.\n")
+        # Work out the key values
+        calculatedSingularValuesArray = CalculateSingularValues(stnRow)
 
-        # Calculate count and output to the CSV file.
-        for singularValue in calculatedSingularValuesArray:
-            count = stnRow.count(singularValue)
-            outputStnFile.writerow([f"{singularValue}",f"{count}"])
+        # Open the output CSV file. 
+        with open(f"{rawFile}{stnFileNumber}.csv", "w", newline='') as csvFile:
+            outputStnFile = csv.writer(csvFile)
 
-    stnFileNumber += 1
-    logFile.write("\n")
+            # Calculate count and output to the CSV file.
+            for singularValue in calculatedSingularValuesArray:
+                count = stnRow.count(singularValue)
+                outputStnFile.writerow([f"{singularValue}",f"{count}"])
+
+        stnFileNumber += 1
+        logFile.write("\n")
 
 
 # Close the log file
