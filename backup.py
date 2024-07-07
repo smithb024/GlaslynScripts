@@ -66,6 +66,7 @@ print('Copying old')
 try:
     for fileName in backedUpFiles:
         logFile.write(f"Copying {fileName} to secondary backup location\n")
+        print(f'Copying {fileName}')
         shutil.copy(f'{DESTINATION_PATH}\\{fileName}', f'{SECONDARY_PATH}\\{fileName}')
 except:
     logFile.write("ERROR: Failed on copy to secondary backup location")
@@ -75,6 +76,7 @@ logFile.write("All previous back up files copied\n\n")
 
 # Clear the backup location prior to the archive state.
 logFile.write("Clear the backup location\n")
+print('Clear the backup location')
 DeleteAllFilesInFolder(DESTINATION_PATH)
 logFile.write("\n")
 
@@ -87,13 +89,15 @@ try:
     for backupLocation in backupLocations:
         compressedFile = f'{DESTINATION_PATH}\\{backupLocation[1]}'
         print(f'Archiving {backupLocation[0]}')
-        logFile.write(f'Archiving {backupLocation[0]}\n')
+        logFile.write(f'Archiving {backupLocation[0]}')
         shutil.make_archive(compressedFile, 'zip', backupLocation[0])
     
         if os.path.exists(f'{compressedFile}.zip'):
             logFile.write(f'{backupLocation[1]} archive is complete\n')
+            print(f'{backupLocation[1]} archive is complete')
         else:
             logFile.write(f'{backupLocation[1]}: ERROR Failed to archive\n')
+            print(f'{backupLocation[1]} ERROR Failed to archive')
             exitScript()
 except:
     logFile.write("ERROR: Failed on backup")
