@@ -50,9 +50,22 @@ def exists(all_lines, route):
             return True
     return False
 
+def export_results(all_lines):
+    """
+    Save the results in a result fle. Output them as a comma separated file.
+    param all_lines: The lines to output.
+    """
+    with open(".\\results.txt", "w") as file:
+        for line in all_lines:
+            print(line)
+            comma_separated = ",".join(line)
+            file.write(comma_separated)
+            file.write("\n")
+
 folder = "C:\\"   # <-- change this
 lines = read_all_lines(folder)
+export_results(lines)
 
-print(f"Loaded {len(lines)} lines:")
-for line in lines:
-    print(line)
+#print(f"Loaded {len(lines)} lines:")
+#for line in lines:
+#    print(line)
