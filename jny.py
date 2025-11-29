@@ -1,4 +1,5 @@
 import os
+import sys
 
 def read_all_lines(folder_path):
     """
@@ -13,10 +14,13 @@ def read_all_lines(folder_path):
             file_path = os.path.join(folder_path, filename)
 
             with open(file_path, "r", encoding="utf-8") as f:
+                line_count = 0
                 for line in f:
+                    line_count += 1
                     route = split_line(line)
                     if exists(all_lines, route) == False:
                         all_lines.append(route)
+                print(f"Loaded {line_count} lines from {file_path}")
 
     all_lines.sort()
     return all_lines
@@ -57,15 +61,13 @@ def export_results(all_lines):
     """
     with open(".\\results.txt", "w") as file:
         for line in all_lines:
-            print(line)
             comma_separated = ",".join(line)
             file.write(comma_separated)
             file.write("\n")
 
-folder = "C:\\"   # <-- change this
+# Read the base folder from the command line input.
+folder = sys.argv[1]
 lines = read_all_lines(folder)
 export_results(lines)
 
-#print(f"Loaded {len(lines)} lines:")
-#for line in lines:
-#    print(line)
+print(f"Output {len(lines)} lines")
